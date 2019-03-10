@@ -1,16 +1,22 @@
 <template>
-  <div class="container">
-    <div class="row">
-      <div class="card col-12">
-        <img :src="post.imageSrc" alt="...">
-        <div class="card-body">
-          <h5 class="card-title">{{ post.title }}</h5>
-          <p class="card-text">{{ post.description }}</p>
+  <b-row>
+    <b-col cols="12">
+      <b-card
+          :title="post.title"
+          :img-src="post.imageSrc"
+          img-alt="Image"
+          img-top
+          tag="article"
+          class="mb-2"
+        >
+          <b-card-text>
+            {{ post.description }}
+          </b-card-text>
+
           <app-edit-post-modal :id="id"></app-edit-post-modal>
-        </div>
-      </div>
-    </div>
-  </div>
+        </b-card>
+    </b-col>
+  </b-row>
 </template>
 
 <script>

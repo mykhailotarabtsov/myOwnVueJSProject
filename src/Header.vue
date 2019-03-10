@@ -1,23 +1,20 @@
 <template>
   <div>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <router-link to="/" class="navbar-brand" href="#">Own Project</router-link>
-      <button @click="openMenu" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
 
-      <div v-if="isMenu" class="navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-          <router-link :to="link.url" class="nav-item active" v-for="link in links">
-            <a class="nav-link" href="#">{{link.title}} <span class="sr-only">(current)</span></a>
-          </router-link>
+    <b-navbar toggleable="lg" type="dark" variant="info" class="mb-5">
+      <b-navbar-brand><router-link to="/" class="navbar-brand" href="#">Own Project</router-link></b-navbar-brand>
 
-          <li class="nav-item" v-if="isUserLoggedIn">
-            <a href="" @click="onLogout" class="nav-link">Logout</a>
-          </li>
-        </ul>
-      </div>
-    </nav>
+      <b-navbar-toggle target="nav_collapse" />
+
+      <b-collapse is-nav id="nav_collapse">
+        <b-navbar-nav>
+          <b-nav-item v-for="link in links">
+            <router-link :to="link.url" class="nav-link">{{link.title}}</router-link>
+          </b-nav-item>
+          <b-nav-item v-if="isUserLoggedIn" @click="onLogout"><a class="nav-link">Logout</a></b-nav-item>
+        </b-navbar-nav>
+      </b-collapse>
+    </b-navbar>
   </div>
 </template>
 
@@ -26,16 +23,13 @@
     props: ['links'],
     data () {
       return {
-        isMenu: false
+        
       }
     },
     methods: {
       onLogout() {
         this.$store.dispatch('logoutUser');
         this.$router.push('/');
-      },
-      openMenu () {
-        this.isMenu = !this.isMenu;
       }
     },
     computed: {

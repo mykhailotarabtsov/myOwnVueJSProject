@@ -1,26 +1,30 @@
 <template>
-  <div class="container">
-    <div class="row">
-      <div class="d-flex flex-wrap justify-content-around">
-        <div 
-          v-for="post in getPosts" 
-          :key="post.id"
-          class="card col-6 col-md-4 mb-5">
-          <img :src="post.imageSrc" class="card-img-top" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">{{ post.title }}</h5>
-            <p class="card-text">{{ post.description }}</p>
-            <router-link :to="'/post/' + post.id" class="btn btn-primary">Open</router-link>
-            <!-- <button class="btn btn-primary" @click="openPost(post.id)">Open</button> -->
-          </div>
-        </div>
+  <b-row>
+    <div class="d-flex flex-wrap">
+      <div 
+        v-for="post in getPosts" 
+        :key="post.id"
+        class="col-6 col-md-4 mb-4">
+        <b-card
+          :title="post.title"
+          :img-src="post.imageSrc"
+          img-alt="Image"
+          img-top
+          tag="article"
+          class="mb-2"
+        >
+          <b-card-text>
+            {{ post.description }}
+          </b-card-text>
+
+          <router-link :to="'/post/' + post.id" class="btn btn-primary">Open</router-link>
+        </b-card>
       </div>
     </div>
-  </div>
+  </b-row>
 </template>
 
 <script>
-  import Post from './Post.vue';
 
   export default {
     data () {
@@ -32,9 +36,6 @@
       getPosts() {
           return this.$store.getters.getPosts;
       }
-    },
-    components: {
-      appPost: Post
     }
   }
 </script>

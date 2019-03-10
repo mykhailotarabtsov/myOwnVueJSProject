@@ -1,9 +1,11 @@
-import store from './store/store';
+import store from './store/store.js';
 
 export default function (to, from, next) {
-  if (store.getters.user) {
+  if (store.state.user) {
+    // console.log(store.state.user);
     next();
   } else {
+    // console.log(store.getters.user);
     next('/login?loginError=true');
   }
 }

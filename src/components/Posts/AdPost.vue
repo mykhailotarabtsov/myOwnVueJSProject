@@ -1,44 +1,45 @@
 <template>
   <div>
-    <form v-if="!loading">
-      <div class="form-group">
-        <label for="title">Title post</label>
-        <input 
+    <b-form v-if="!loading" @submit.prevent="sendPost">
+      <b-form-group
+        id="titlePost"
+        label="Title post:"
+        label-for="titlePost"
+      >
+        <b-form-input
+          id="titlePost"
           type="text"
-          class="form-control" 
-          id="title" 
-          placeholder="Title"
-          v-model="data.title">
-      </div>
-      <!-- <div class="form-group">
-        <label for="author">Author</label>
-        <input 
-          type="text" 
-          class="form-control" 
-          id="author"
-          v-model="data.author">
-      </div> -->
-      <div class="form-group">
-        <label for="description">Description</label>
-        <textarea 
-          class="form-control" 
-          id="description" 
+          v-model="data.title"
+          placeholder="Enter Title" />
+      </b-form-group>
+      <b-form-group
+        id="description"
+        label="Description:"
+        label-for="description"
+      >
+        <b-form-textarea
+          id="description"
+          v-model="data.description"
+          placeholder="Enter description..."
           rows="3"
-          v-model="data.description"></textarea>
-      </div>
-      <div class="form-group">
-        <label for="image">Image</label>
-        <input 
-          type="text" 
-          multiple 
-          class="form-control" 
-          id="image"
-          v-model="data.imageSrc">
-      </div>
+          max-rows="6"
+        />
+      </b-form-group>
+      <b-form-group
+        id="imageSrc"
+        label="Image src:"
+        label-for="imageSrc"
+      >
+        <b-form-input
+          id="imageSrc"
+          type="text"
+          v-model="data.imageSrc"
+          placeholder="Image src" />
+      </b-form-group>
       <button 
-        class="btn btn-success"
-        @click.prevent="sendPost">Send</button>
-    </form>
+        class="btn btn-success">Send</button>
+    </b-form>
+
     <app-spinner v-else></app-spinner>
   </div>
 </template>
@@ -63,7 +64,7 @@
     },
     methods: {
       sendPost() {
-        this.$store.dispatch('createAd', this.data)
+        this.$store.dispatch('createPost', this.data)
           .then(() => {
             this.$router.push('/posts');
           })

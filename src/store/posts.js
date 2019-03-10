@@ -1,4 +1,5 @@
 import * as fb from 'firebase';
+import Vue from 'vue';
 
 class Post {
   constructor (title, description, author, imageSrc='', id = null) {
@@ -50,12 +51,17 @@ export default {
     loadPosts(state, payload) {
       state.posts = payload;
     },
-    // getPosts(payload) {
-    //   return payload;
-    // }
+    editPost(state, payload) {
+      state.posts.find((post, index) => {
+        if (post.id === payload.id) {
+          post = payload;
+          Vue.set(state.posts, index, payload)
+        }
+      });
+    }
   },
   actions: {
-    async fetchPosts({commit}, payload) {
+    async fetchPosts({commit}) {
 
       const resultPosts = [];
 
@@ -73,7 +79,7 @@ export default {
         throw error;
       }
     },
-    async createAd({commit, getters}, payload) {
+    async createPost({commit, getters}, payload) {
       commit('clearError');
       commit('setLoading', true);
       try {
@@ -89,17 +95,7 @@ export default {
         commit('setLoading', false);
         throw error;
       }
-    },
-    // async getPosts({commit}) {
-    //   try {
-    //     const fbValue = await fb.database().ref('posts').once('value');
-    //     const posts = fbValue.val();
-    //     commit('getPosts', posts);
-    //   } catch (error) {
-    //     console.log(error.message);
-    //     throw error;
-    //   }
-    // }
+    }
   },
   getters: {
     getPosts(state) {

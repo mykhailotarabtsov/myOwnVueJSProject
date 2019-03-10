@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="container">
+  <b-container id="app">
     <app-header :links="links"></app-header>
     <transition name="slide" mode="out-in">
       <router-view></router-view>
@@ -11,7 +11,7 @@
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
-  </div>
+  </b-container>
 </template>
 
 <script>
