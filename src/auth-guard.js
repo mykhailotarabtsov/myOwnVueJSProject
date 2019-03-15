@@ -1,11 +1,13 @@
 import store from './store/store.js';
 
 export default function (to, from, next) {
-  if (store.state.user) {
-    // console.log(store.state.user);
+  if (localStorage.getItem('userId')) {
+    // console.log(localStorage.getItem('userId'));
     next();
   } else {
-    // console.log(store.getters.user);
+    // console.log(store.state.user.user);
     next('/login?loginError=true');
+    // console.log(store.state.user);
   }
+
 }

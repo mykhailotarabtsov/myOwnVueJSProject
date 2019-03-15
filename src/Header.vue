@@ -8,7 +8,9 @@
 
       <b-collapse is-nav id="nav_collapse">
         <b-navbar-nav>
-          <b-nav-item v-for="link in links">
+          <b-nav-item 
+            v-for="(link, index) in links"
+            :key="index">
             <router-link :to="link.url" class="nav-link">{{link.title}}</router-link>
           </b-nav-item>
           <b-nav-item v-if="isUserLoggedIn" @click="onLogout"><a class="nav-link">Logout</a></b-nav-item>
@@ -19,6 +21,7 @@
 </template>
 
 <script>
+  import {mapGetters, mapActions} from 'vuex';
   export default {
     props: ['links'],
     data () {
@@ -27,15 +30,14 @@
       }
     },
     methods: {
-      onLogout() {
-        this.$store.dispatch('logoutUser');
-        this.$router.push('/');
-      }
+      ...mapActions({
+        onLogout: 'logoutUser'
+      })
     },
     computed: {
-      isUserLoggedIn() {
-        return this.$store.getters.isUserLoggedIn;
-      },
+      ...mapGetters([
+        'isUserLoggedIn'
+      ])
     }
   }
 </script>

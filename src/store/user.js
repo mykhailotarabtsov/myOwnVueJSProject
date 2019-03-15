@@ -1,11 +1,11 @@
 import * as fb from 'firebase';
 import router from '../main.js';
 
-class User {
-  constructor (id) {
-    this.id = id;
-  }
-}
+// class User {
+//   constructor (id) {
+//     this.id = id;
+//   }
+// }
 
 export default {
   state: {
@@ -13,13 +13,16 @@ export default {
   },
   mutations: {
     setUser(state, payload) {
+      // console.log(state.user);
       state.user = payload;
+      // console.log(payload);
     }
   },
   actions: {
     async registerUser({commit, dispatch}, {email, password}) {
       commit('clearError');
       commit('setLoading', true);
+      console.log(email, password);
       try {
         const user = await fb.auth().createUserWithEmailAndPassword(email, password);
         const token = await user.user.getIdTokenResult();
@@ -28,9 +31,12 @@ export default {
         const expirationDate = new Date(token.expirationTime);
         localStorage.setItem('expirationTime', expirationDate);
         console.log(token);
-        dispatch('setLogoutTimer', expirationDate.getTime())
-        commit('setUser', new User (user.user.uid));
+        dispatch('setLogoutTimer', expirationDate.getTime() - new Date().getTime())
+        // commit('setUser', new User (user.user.uid));
+        commit('setUser', user.user.uid);
+        dispatch('fetchPosts');
         commit('setLoading', false);
+        router.push('/');
       } catch (error) {
         commit('setLoading', false);
         commit('setError', error.message);
@@ -48,8 +54,11 @@ export default {
         const expirationDate = new Date(token.expirationTime);
         localStorage.setItem('expirationTime', expirationDate);
         dispatch('setLogoutTimer', expirationDate.getTime() - new Date().getTime());
-        commit('setUser', new User (user.user.uid));
+        // commit('setUser', new User (user.user.uid));
+        commit('setUser', user.user.uid);
+        dispatch('fetchPosts');
         commit('setLoading', false);
+        router.push('/');
       } catch (error) {
         commit('setLoading', false);
         commit('setError', error.message);
@@ -75,7 +84,9 @@ export default {
         return;
       }
       const userId = localStorage.getItem('userId');
-      commit('setUser', new User(userId));
+      // commit('setUser', new User(userId));
+      commit('setUser', userId);
+      dispatch('fetchPosts');
     },
     logoutUser({commit}) {
       // fb.auth().signOut();

@@ -7,35 +7,8 @@
         variant="warning">Edit</b-button>
 
       <!-- Modal Component -->
-      <b-modal id="modal1" title="BootstrapVue" @ok="savePost">
-        <!-- <div class="form-group">
-          <label for="title">Title post</label>
-          <input 
-            type="text"
-            class="form-control" 
-            id="title" 
-            placeholder="Title"
-            v-model="postEdited.title">
-        </div>
-        <div class="form-group">
-          <label for="description">Description</label>
-          <textarea 
-            class="form-control" 
-            id="description" 
-            rows="3"
-            v-model="postEdited.description"></textarea>
-        </div>
-        <div class="form-group">
-          <label for="image">Image</label>
-          <input 
-            type="text" 
-            multiple 
-            class="form-control"
-            id="image"
-            v-model="postEdited.imageSrc">
-        </div> -->
-
-        <b-form @ok="savePost">
+      <b-modal id="modal1" title="BootstrapVue" @ok="savePost(postEdited)" :ok-disabled="$v.$invalid">
+        <b-form @ok="savePost(postEdited)">
           <b-form-group
             id="titlePost"
             label="Title post:"
@@ -90,6 +63,7 @@
 <script>
   import * as fb from 'firebase';
   import { required, minLength, url } from 'vuelidate/lib/validators';
+  import {mapMutations} from 'vuex';
 
   export default {
     props: ['id'],
@@ -99,7 +73,8 @@
         postEdited: {
           title: '',
           description: '',
-          imageSrc: ''
+          imageSrc: '',
+          id: this.id
         }
       }
     },
@@ -120,18 +95,15 @@
       }
     },
     methods: {
+      ...mapMutations({
+        savePost: 'editPost'
+      }),
       post () {
         const id = this.id;
         let post = this.$store.getters.postByID(id);
         this.postEdited.title = post.title;
         this.postEdited.description = post.description;
         this.postEdited.imageSrc = post.imageSrc;
-      },
-      savePost() {
-        fb.database().ref('posts/' + this.id).set(this.postEdited);
-        // this.$store.dispatch('fetchPosts');
-        this.postEdited.id = this.id;
-        this.$store.commit('editPost', this.postEdited);
       }
     }
   }

@@ -17,16 +17,21 @@
 <script>
   import Header from './Header.vue';
   import Home from './Home.vue';
+  import {mapGetters, mapActions} from 'vuex';
 
 export default {
   name: 'app',
   computed: {
-    error() {
-      return this.$store.getters.error;
-    },
-    isUserLoggedIn() {
-      return this.$store.getters.isUserLoggedIn;
-    },
+    ...mapGetters([
+      'error',
+      'isUserLoggedIn'
+    ]),
+    // error() {
+    //   return this.$store.getters.error;
+    // },
+    // isUserLoggedIn() {
+    //   return this.$store.getters.isUserLoggedIn;
+    // },
     links() {
       if (this.isUserLoggedIn) {
         return [
@@ -53,9 +58,15 @@ export default {
     }
   },
   methods: {
-    clearError() {
-      this.$store.dispatch('clearError');
-    }
+    ...mapActions([
+      'clearError'
+    ])
+    // clearError() {
+    //   this.$store.dispatch('clearError');
+    // }
+  },
+  created() {
+    this.$store.dispatch('autoLoginUser');
   },
   components: {
     appHeader: Header,

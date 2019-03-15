@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-form v-if="!loading" @submit.prevent="sendPost">
+    <b-form v-if="!loading" @submit.prevent="sendPost(data)">
       <b-form-group
         id="titlePost"
         label="Title post:"
@@ -57,6 +57,7 @@
 <script>
   import Spinner from '../Spinner.vue';
   import { required, minLength, url } from 'vuelidate/lib/validators';
+  import {mapGetters, mapActions} from 'vuex';
 
   export default {
     data () {
@@ -85,18 +86,21 @@
       }
     },
     computed: {
-      loading() {
-        return this.$store.getters.loading;
-      }
+      ...mapGetters([
+        'loading'
+      ])
     },
     methods: {
-      sendPost() {
-        this.$store.dispatch('createPost', this.data)
-          .then(() => {
-            this.$router.push('/posts');
-          })
-          .catch(() => {});
-      }
+      ...mapActions({
+        sendPost: 'createPost'
+      }),
+      // sendPost() {
+      //   this.$store.dispatch('createPost', this.data)
+      //     .then(() => {
+      //       this.$router.push('/posts');
+      //     })
+      //     .catch(() => {});
+      // }
     },
     components: {
       appSpinner: Spinner

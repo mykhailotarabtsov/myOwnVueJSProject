@@ -28,8 +28,8 @@ const router = new VueRouter({
 export default router;
 
 new Vue({
-  router,
   store,
+  router,
   created() {
     // Initialize Firebase
     var config = {
@@ -47,9 +47,9 @@ new Vue({
     //     this.$store.dispatch('autoLoginUser', user);
     //   }
     // });
-    this.$store.dispatch('autoLoginUser');
+    // this.$store.dispatch('autoLoginUser');
 
-    this.$store.dispatch('fetchPosts');
+    // this.$store.dispatch('fetchPosts');
   },
   render: h => h(App),
 }).$mount('#app')

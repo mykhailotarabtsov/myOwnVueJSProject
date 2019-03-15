@@ -1,5 +1,6 @@
 import * as fb from 'firebase';
 import Vue from 'vue';
+import router from '../main';
 
 class Post {
   constructor (title, description, author, imageSrc='', id = null) {
@@ -52,6 +53,7 @@ export default {
       state.posts = payload;
     },
     editPost(state, payload) {
+      fb.database().ref('posts/' + payload.id).set(payload);
       state.posts.find((post, index) => {
         if (post.id === payload.id) {
           post = payload;
@@ -61,11 +63,11 @@ export default {
     }
   },
   actions: {
-    async fetchPosts({commit}) {
-
+    async fetchPosts({commit, dispatch}) {
       const resultPosts = [];
 
       try {
+        dispatch('setLoading', true);
         const fbValue = await fb.database().ref('posts').once('value');
         const posts = fbValue.val();
         Object.keys(posts).forEach(key => {
@@ -74,6 +76,7 @@ export default {
           resultPosts.push(post);
         });
         commit('loadPosts', resultPosts);
+        dispatch('setLoading', false);
       } catch (error) {
         console.log(error.message);
         throw error;
@@ -83,13 +86,14 @@ export default {
       commit('clearError');
       commit('setLoading', true);
       try {
-        const newPost = new Post (payload.title, payload.description, getters.user.id, payload.imageSrc)
+        const newPost = new Post (payload.title, payload.description, getters.user, payload.imageSrc)
         const post = await fb.database().ref('posts').push(newPost);
         commit('setLoading', false);
         commit('adPost', {
          ...newPost,
          id: post.key
         });
+        router.push('/posts');
       } catch (error) {
         commit('setError', error.message);
         commit('setLoading', false);

@@ -1,5 +1,5 @@
 <template>
-  <b-row>
+  <b-row v-if="!loading">
     <b-col cols="12">
       <b-card
           :title="post.title"
@@ -17,10 +17,13 @@
         </b-card>
     </b-col>
   </b-row>
+  <app-spinner v-else></app-spinner>
 </template>
 
 <script>
 import EditPostModal from '../EditPostModal.vue';
+import Spinner from '../Spinner.vue';
+import {mapGetters} from 'vuex';
 
 export default {
   props: ['id'],
@@ -30,13 +33,17 @@ export default {
     }
   },
   computed: {
+    ...mapGetters([
+      'loading'
+    ]),
     post() {
       const id = this.id;
       return this.$store.getters.postByID(id);
     }
   },
   components: {
-    appEditPostModal: EditPostModal
+    appEditPostModal: EditPostModal,
+    appSpinner: Spinner
   }
 }
 </script>

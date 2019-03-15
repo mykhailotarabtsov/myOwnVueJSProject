@@ -1,7 +1,7 @@
 <template>
-  <b-row>
+  <b-row v-if="!loading">
     <div class="d-flex flex-wrap">
-      <div 
+      <div
         v-for="post in getPosts" 
         :key="post.id"
         class="col-6 col-md-4 mb-4">
@@ -22,10 +22,12 @@
       </div>
     </div>
   </b-row>
+  <app-spinner v-else></app-spinner>
 </template>
 
 <script>
-
+  import Spinner from '../Spinner.vue';
+  import {mapGetters} from 'vuex';
   export default {
     data () {
       return {
@@ -33,9 +35,13 @@
       }
     },
     computed: {
-      getPosts() {
-          return this.$store.getters.getPosts;
-      }
+      ...mapGetters([
+        'getPosts',
+        'loading'
+      ])
+    },
+    components: {
+      appSpinner: Spinner
     }
   }
 </script>
