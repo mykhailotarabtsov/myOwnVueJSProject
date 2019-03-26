@@ -13,7 +13,7 @@
             {{ post.description }}
           </b-card-text>
 
-          <app-edit-post-modal :id="id"></app-edit-post-modal>
+          <app-edit-post-modal :id="id" :currentPost="post"></app-edit-post-modal>
         </b-card>
     </b-col>
   </b-row>
@@ -23,7 +23,7 @@
 <script>
 import EditPostModal from '../EditPostModal.vue';
 import Spinner from '../Spinner.vue';
-import {mapGetters} from 'vuex';
+import {mapGetters, mapActions} from 'vuex';
 
 export default {
   props: ['id'],
@@ -36,6 +36,9 @@ export default {
     ...mapGetters([
       'loading'
     ]),
+    ...mapActions([
+      'autoLoginUser'
+    ]),
     post() {
       const id = this.id;
       return this.$store.getters.postByID(id);
@@ -44,6 +47,9 @@ export default {
   components: {
     appEditPostModal: EditPostModal,
     appSpinner: Spinner
+  },
+  mounted() {
+    this.autoLoginUser;
   }
 }
 </script>

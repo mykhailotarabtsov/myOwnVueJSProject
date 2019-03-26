@@ -13,7 +13,7 @@
           v-model="user.email" 
           trim 
           :class="{'is-invalid': $v.user.email.$error, 'is-valid': !$v.user.email.$invalid}" 
-          @blur="$v.user.email.$touch()" 
+          @blur="$v.user.email.$touch" 
         />
         <p v-if="!$v.user.email.email" class="mt-1 warning">Please provide a valid email adress.</p>
         <p v-if="!$v.user.email.required && $v.user.email.$error" class="mt-1 warning">This field most not be empty</p>
@@ -29,7 +29,7 @@
           v-model="user.password" 
           trim 
           :class="{'is-invalid': $v.user.password.$error, 'is-valid': !$v.user.password.$invalid}" 
-          @blur="$v.user.password.$touch()" 
+          @blur="$v.user.password.$touch" 
         />
         <p v-if="$v.user.password.$invalid && $v.user.password.$error" class="mt-1 warning">This field most not be empty and most have {{ $v.user.password.$params.minLength.min }} characters</p>
       </b-form-group>
@@ -44,7 +44,7 @@
           v-model="confirmPassword" 
           trim 
           :class="{'is-invalid': $v.confirmPassword.$error, 'is-valid': !$v.confirmPassword.$invalid}"
-          @blur="$v.confirmPassword.$touch()" 
+          @blur="$v.confirmPassword.$touch" 
         />
         <div>{{ $v }}</div>
         <p v-if="!$v.confirmPassword.sameAs" class="mt-1 warning">This field must be equal as Password field</p>
@@ -86,7 +86,6 @@
         }
       },
       confirmPassword: {
-        // sameAs: sameAs('password')
         sameAs: sameAs(vm => {
           return vm.user.password
         })
@@ -98,18 +97,12 @@
       ])
     },
     methods: {
-      ...mapActions({
-        onSubmit: 'registerUser'
-      })
+      ...mapActions([
+        'registerUser'
+      ])
     },
     components: {
       appSpinner: Spinner
     }
   }
 </script>
-
-<style scoped>
-  .warning {
-    color: red;
-  }
-</style>

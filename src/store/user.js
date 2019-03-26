@@ -1,25 +1,17 @@
 import * as fb from 'firebase';
 import router from '../main.js';
 
-// class User {
-//   constructor (id) {
-//     this.id = id;
-//   }
-// }
-
 export default {
   state: {
     user: null
   },
   mutations: {
     setUser(state, payload) {
-      // console.log(state.user);
       state.user = payload;
-      // console.log(payload);
     }
   },
   actions: {
-    async registerUser({commit, dispatch}, {email, password}) {
+    async registerUser({commit}, {email, password}) {
       commit('clearError');
       commit('setLoading', true);
       console.log(email, password);
@@ -31,10 +23,7 @@ export default {
         const expirationDate = new Date(token.expirationTime);
         localStorage.setItem('expirationTime', expirationDate);
         console.log(token);
-        dispatch('setLogoutTimer', expirationDate.getTime() - new Date().getTime())
-        // commit('setUser', new User (user.user.uid));
         commit('setUser', user.user.uid);
-        dispatch('fetchPosts');
         commit('setLoading', false);
         router.push('/');
       } catch (error) {
@@ -43,7 +32,7 @@ export default {
         throw error;
       }
     },
-    async loginUser({commit, dispatch}, {email, password}) {
+    async loginUser({commit}, {email, password}) {
       commit('clearError');
       commit('setLoading', true);
       try {
@@ -53,10 +42,7 @@ export default {
         localStorage.setItem('userId', token.claims.user_id);
         const expirationDate = new Date(token.expirationTime);
         localStorage.setItem('expirationTime', expirationDate);
-        dispatch('setLogoutTimer', expirationDate.getTime() - new Date().getTime());
-        // commit('setUser', new User (user.user.uid));
         commit('setUser', user.user.uid);
-        dispatch('fetchPosts');
         commit('setLoading', false);
         router.push('/');
       } catch (error) {
@@ -65,11 +51,6 @@ export default {
         throw error;
       }
     },
-    setLogoutTimer ({dispatch}, expirationTime) {
-      setTimeout(() => {
-        dispatch('logoutUser');
-      }, expirationTime);
-    },
     autoLoginUser({commit, dispatch}) {
       const token = localStorage.getItem('token');
       if (!token) {
@@ -77,19 +58,14 @@ export default {
       }
       const expirationTime = new Date(localStorage.getItem('expirationTime')).getTime();
       const now = new Date().getTime();
-      // console.log(now);
-      // console.log(expirationTime);
       if (now >= expirationTime) {
         dispatch('logoutUser');
         return;
       }
       const userId = localStorage.getItem('userId');
-      // commit('setUser', new User(userId));
       commit('setUser', userId);
-      dispatch('fetchPosts');
     },
     logoutUser({commit}) {
-      // fb.auth().signOut();
       localStorage.removeItem('token');
       localStorage.removeItem('userId');
       localStorage.removeItem('expirationTime');
@@ -98,9 +74,6 @@ export default {
     }
   },
   getters: {
-    user(state) {
-      return state.user;
-    },
     isUserLoggedIn(state) {
       return state.user !== null;
     }

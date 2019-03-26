@@ -27,7 +27,7 @@
 
 <script>
   import Spinner from '../Spinner.vue';
-  import {mapGetters} from 'vuex';
+  import {mapGetters, mapActions} from 'vuex';
   export default {
     data () {
       return {
@@ -38,10 +38,20 @@
       ...mapGetters([
         'getPosts',
         'loading'
+      ]),
+      ...mapActions([
+        'fetchPosts',
+        'autoLoginUser'
       ])
     },
     components: {
       appSpinner: Spinner
+    },
+    created() {
+      this.fetchPosts;
+    },
+    mounted() {
+      this.autoLoginUser;
     }
   }
 </script>

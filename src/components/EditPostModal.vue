@@ -7,8 +7,8 @@
         variant="warning">Edit</b-button>
 
       <!-- Modal Component -->
-      <b-modal id="modal1" title="BootstrapVue" @ok="savePost(postEdited)" :ok-disabled="$v.$invalid">
-        <b-form @ok="savePost(postEdited)">
+      <b-modal id="modal1" title="BootstrapVue" @ok="editPost(postEdited)" :ok-disabled="$v.$invalid">
+        <b-form @ok="editPost(postEdited)">
           <b-form-group
             id="titlePost"
             label="Title post:"
@@ -61,12 +61,11 @@
 </template>
 
 <script>
-  import * as fb from 'firebase';
   import { required, minLength, url } from 'vuelidate/lib/validators';
-  import {mapMutations} from 'vuex';
+  import {mapActions} from 'vuex';
 
   export default {
-    props: ['id'],
+    props: ['id', 'currentPost'],
     data () {
       return {
         modal: false,
@@ -94,18 +93,24 @@
         }
       }
     },
+    computed: {
+      ...mapActions([
+        'autoLoginUser'
+      ])
+    },
     methods: {
-      ...mapMutations({
-        savePost: 'editPost'
-      }),
+      ...mapActions([
+        'editPost',
+      ]),
       post () {
-        const id = this.id;
-        let post = this.$store.getters.postByID(id);
-        this.postEdited.title = post.title;
-        this.postEdited.description = post.description;
-        this.postEdited.imageSrc = post.imageSrc;
+        this.postEdited.title = this.currentPost.title;
+        this.postEdited.description = this.currentPost.description;
+        this.postEdited.imageSrc = this.currentPost.imageSrc;
       }
-    }
+    },
+    mounted() {
+    this.autoLoginUser;
+  }
   }
 </script>
 
@@ -122,8 +127,5 @@
     right: 0;
     bottom: 0;
     background-color: rgba(0, 0, 0, .9);
-  }
-  .warning {
-    color: red;
   }
 </style>

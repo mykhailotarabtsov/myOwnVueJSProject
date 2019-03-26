@@ -13,7 +13,7 @@
             :key="index">
             <router-link :to="link.url" class="nav-link">{{link.title}}</router-link>
           </b-nav-item>
-          <b-nav-item v-if="isUserLoggedIn" @click="onLogout"><a class="nav-link">Logout</a></b-nav-item>
+          <b-nav-item v-if="isUserLoggedIn" @click="logoutUser"><a class="nav-link">Logout</a></b-nav-item>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
@@ -26,18 +26,42 @@
     props: ['links'],
     data () {
       return {
-        
+        // links: []
       }
     },
     methods: {
-      ...mapActions({
-        onLogout: 'logoutUser'
-      })
+      ...mapActions([
+        'logoutUser'
+      ])
     },
     computed: {
       ...mapGetters([
         'isUserLoggedIn'
       ])
-    }
+    },
+    // created() {
+    //   if (this.isUserLoggedIn) {
+    //     this.links = [
+    //       {
+    //         title: 'Home', url: '/'
+    //       },
+    //       {
+    //         title: 'Posts', url: '/posts'
+    //       },
+    //       {
+    //         title: 'Ad Post', url: '/ad-post'
+    //       }
+    //     ]
+    //   } else {
+    //     this.links = [
+    //       {
+    //         title: 'Login', url: '/login'
+    //       },
+    //       {
+    //         title: 'Register', url: '/register'
+    //       }
+    //     ]
+    //   }
+    // }
   }
 </script>

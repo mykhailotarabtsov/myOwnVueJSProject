@@ -1,13 +1,8 @@
-import store from './store/store.js';
-
 export default function (to, from, next) {
-  if (localStorage.getItem('userId')) {
-    // console.log(localStorage.getItem('userId'));
+  if (localStorage.getItem('userId') && localStorage.getItem('token') && localStorage.getItem('expirationTime')) {
     next();
   } else {
-    // console.log(store.state.user.user);
     next('/login?loginError=true');
-    // console.log(store.state.user);
   }
 
 }

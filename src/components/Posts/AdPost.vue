@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-form v-if="!loading" @submit.prevent="sendPost(data)">
+    <b-form v-if="!loading" @submit.prevent="createPost(data)">
       <b-form-group
         id="titlePost"
         label="Title post:"
@@ -12,7 +12,7 @@
           v-model="data.title"
           placeholder="Enter Title" 
           :class="{'is-invalid': $v.data.title.$error, 'is-valid': !$v.data.title.$invalid }"
-          @blur="$v.data.title.$touch()" />
+          @blur="$v.data.title.$touch" />
           <p v-if="$v.data.title.$error" class="mt-1 warning">This field most not be empty and most have {{ $v.data.title.$params.minLength.min }} characters</p>
       </b-form-group>
       <b-form-group
@@ -27,7 +27,7 @@
           rows="3"
           max-rows="6"
           :class="{'is-invalid': $v.data.description.$error, 'is-valid': !$v.data.description.$invalid}" 
-          @blur="$v.data.description.$touch()"
+          @blur="$v.data.description.$touch"
         />
         <p v-if="$v.data.description.$error" class="mt-1 warning">This field most not be empty and most have {{ $v.data.description.$params.minLength.min }} characters</p>
       </b-form-group>
@@ -42,7 +42,7 @@
           v-model="data.imageSrc"
           placeholder="Image src" 
           :class="{'is-invalid': $v.data.imageSrc.$error, 'is-valid': !$v.data.imageSrc.$invalid}" 
-          @blur="$v.data.imageSrc.$touch()" />
+          @blur="$v.data.imageSrc.$touch" />
           <p v-if="$v.data.imageSrc.$error" class="mt-1 warning">This field must be URL address of your image</p>
       </b-form-group>
       <button 
@@ -88,28 +88,21 @@
     computed: {
       ...mapGetters([
         'loading'
+      ]),
+      ...mapActions([
+        'autoLoginUser'
       ])
     },
     methods: {
-      ...mapActions({
-        sendPost: 'createPost'
-      }),
-      // sendPost() {
-      //   this.$store.dispatch('createPost', this.data)
-      //     .then(() => {
-      //       this.$router.push('/posts');
-      //     })
-      //     .catch(() => {});
-      // }
+      ...mapActions([
+        'createPost',
+      ])
     },
     components: {
       appSpinner: Spinner
+    },
+    mounted() {
+      this.autoLoginUser;
     }
   }
 </script>
-
-<style scoped>
-  .warning {
-    color: red;
-  }
-</style>

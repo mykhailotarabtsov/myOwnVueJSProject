@@ -18,8 +18,11 @@ export default {
     setLoading({commit}, payload) {
       commit('setLoading', payload);
     },
-    setError({commit}, payload) {
+    setError({commit, dispatch}, payload) {
       commit('setError', payload);
+      setTimeout(() => {
+        dispatch('clearError');
+      }, 3000)
     },
     clearError({commit}) {
       commit('clearError');

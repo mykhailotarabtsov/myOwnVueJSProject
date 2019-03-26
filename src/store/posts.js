@@ -14,29 +14,7 @@ class Post {
 
 export default {
   state: {
-    posts: [
-      // {
-      //   id: 0,
-      //   author: 'Mykhailo',
-      //   title: 'First Post',
-      //   description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin posuere erat sit amet nisl molestie, non aliquam augue gravida. Maecenas malesuada lacinia urna a commodo. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ligula magna, accumsan ut lacus eu, facilisis euismod lectus. Vestibulum eleifend molestie bibendum. Mauris faucibus non quam ac suscipit. Cras imperdiet tortor eget metus dictum gravida. Donec varius egestas ex id rutrum. Nulla sed dolor venenatis, rutrum mauris a, rhoncus purus.',
-      //   img: 'https://cs8.pikabu.ru/post_img/big/2016/01/26/9/1453819344162885972.jpg'
-      // },
-      // {
-      //   id: 1,
-      //   author: 'Gregory',
-      //   title: 'Second Post',
-      //   description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin posuere erat sit amet nisl molestie, non aliquam augue gravida. Maecenas malesuada lacinia urna a commodo. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ligula magna, accumsan ut lacus eu, facilisis euismod lectus. Vestibulum eleifend molestie bibendum. Mauris faucibus non quam ac suscipit. Cras imperdiet tortor eget metus dictum gravida. Donec varius egestas ex id rutrum. Nulla sed dolor venenatis, rutrum mauris a, rhoncus purus.',
-      //   img: 'https://s.dou.ua/img/announces/how-to-front-end-840.jpg'
-      // },
-      // {
-      //   id: 2,
-      //   author: 'Volodya',
-      //   title: 'Third Post',
-      //   description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin posuere erat sit amet nisl molestie, non aliquam augue gravida. Maecenas malesuada lacinia urna a commodo. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ligula magna, accumsan ut lacus eu, facilisis euismod lectus. Vestibulum eleifend molestie bibendum. Mauris faucibus non quam ac suscipit. Cras imperdiet tortor eget metus dictum gravida. Donec varius egestas ex id rutrum. Nulla sed dolor venenatis, rutrum mauris a, rhoncus purus.',
-      //   img: 'http://blog.edx.org/wp-content/uploads/2016/07/FrontEndDev.jpg'
-      // }
-    ],
+    posts: [],
   },
   mutations: {
      initPosts(state, payload) {
@@ -53,7 +31,6 @@ export default {
       state.posts = payload;
     },
     editPost(state, payload) {
-      fb.database().ref('posts/' + payload.id).set(payload);
       state.posts.find((post, index) => {
         if (post.id === payload.id) {
           post = payload;
@@ -98,6 +75,13 @@ export default {
         commit('setError', error.message);
         commit('setLoading', false);
         throw error;
+      }
+    },
+    editPost({commit, dispatch}, payload) {
+      dispatch('autoLoginUser');
+      if (localStorage.getItem('userId') && localStorage.getItem('token') && localStorage.getItem('expirationTime')) {
+        fb.database().ref('posts/' + payload.id).set(payload);
+        commit('editPost', payload);
       }
     }
   },

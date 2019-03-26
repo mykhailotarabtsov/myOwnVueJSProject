@@ -16,7 +16,6 @@
 
 <script>
   import Header from './Header.vue';
-  import Home from './Home.vue';
   import {mapGetters, mapActions} from 'vuex';
 
 export default {
@@ -26,12 +25,6 @@ export default {
       'error',
       'isUserLoggedIn'
     ]),
-    // error() {
-    //   return this.$store.getters.error;
-    // },
-    // isUserLoggedIn() {
-    //   return this.$store.getters.isUserLoggedIn;
-    // },
     links() {
       if (this.isUserLoggedIn) {
         return [
@@ -59,18 +52,15 @@ export default {
   },
   methods: {
     ...mapActions([
-      'clearError'
+      'clearError',
+      'autoLoginUser'
     ])
-    // clearError() {
-    //   this.$store.dispatch('clearError');
-    // }
   },
   created() {
-    this.$store.dispatch('autoLoginUser');
+    this.autoLoginUser();
   },
   components: {
-    appHeader: Header,
-    appHome: Home
+    appHeader: Header
   }
 }
 </script>
@@ -102,5 +92,8 @@ export default {
     to {
       opacity: 0;
     }
+  }
+  .warning {
+    color: red;
   }
 </style>
