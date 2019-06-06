@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <b-form v-if="!loading" @submit.prevent="onSubmit(user)">
+    <b-form v-if="!loading" @submit.prevent="registerUser(user)">
       <b-form-group
       id="email"
       label="Enter your email please"
