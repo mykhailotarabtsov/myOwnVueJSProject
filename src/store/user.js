@@ -76,6 +76,9 @@ export default {
   getters: {
     isUserLoggedIn(state) {
       return state.user !== null;
+    },
+    user (state) {
+      return state.user;
     }
   }
 }

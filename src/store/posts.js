@@ -37,6 +37,9 @@ export default {
           Vue.set(state.posts, index, payload)
         }
       });
+    },
+    postByID (state, postId) {
+      return state.posts.find(post => post.id === postId);
     }
   },
   actions: {

@@ -37,6 +37,7 @@ export default {
       'loading'
     ]),
     ...mapActions([
+      'fetchPosts',
       'autoLoginUser'
     ]),
     post() {
@@ -50,6 +51,9 @@ export default {
   },
   mounted() {
     this.autoLoginUser;
-  }
+  },
+  created() {
+    this.fetchPosts;
+  },
 }
 </script>
