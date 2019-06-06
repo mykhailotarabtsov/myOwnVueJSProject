@@ -46,7 +46,6 @@
           :class="{'is-invalid': $v.confirmPassword.$error, 'is-valid': !$v.confirmPassword.$invalid}"
           @blur="$v.confirmPassword.$touch" 
         />
-        <div>{{ $v }}</div>
         <p v-if="!$v.confirmPassword.sameAs" class="mt-1 warning">This field must be equal as Password field</p>
       </b-form-group>
       <button 
